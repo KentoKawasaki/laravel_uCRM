@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from "@inertiajs/inertia";
 import { nl2br } from "@/common";
 
 defineProps({
@@ -9,10 +9,10 @@ defineProps({
 });
 
 const deleteItem = (id) => {
-  Inertia.delete(route('items.destroy', { item: id }), {
-        onBefore: () => confirm('本当に削除しますか？')
-    })
-}
+  Inertia.delete(route("items.destroy", { item: id }), {
+    onBefore: () => confirm("本当に削除しますか？"),
+  });
+};
 </script>
 
 <template>
@@ -190,7 +190,7 @@ const deleteItem = (id) => {
                     </div>
                     <div class="mt-10 p-2 w-1/2 inline-block">
                       <button
-                      @click="deleteItem(item.id)"
+                        @click="deleteItem(item.id)"
                         class="
                           flex
                           mx-auto
@@ -206,7 +206,7 @@ const deleteItem = (id) => {
                         "
                       >
                         削除する
-                    </button>
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -193,8 +193,8 @@ const updateItem = (id) => {
 
                           <InputError
                             class="mt-2"
-                            v-if="errors.price"
-                            :message="errors.price"
+                            v-if="errors.is_selling"
+                            :message="errors.is_selling"
                           ></InputError>
                         </div>
                       </div>
