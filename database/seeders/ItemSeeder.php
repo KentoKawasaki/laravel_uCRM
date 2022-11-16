@@ -18,17 +18,17 @@ class ItemSeeder extends Seeder
     {
         DB::table('items')->insert([
             [
-                'name' => 'カット',
+                'item_name' => 'カット',
                 'memo' => 'カットの詳細',
                 'price' => 6000,
             ],
             [
-                'name' => 'カラー',
+                'item_name' => 'カラー',
                 'memo' => 'カラーの詳細',
                 'price' => 8000,
             ],
             [
-                'name' => 'パーマ(カット込)',
+                'item_name' => 'パーマ(カット込)',
                 'memo' => 'パーマ、カットの詳細',
                 'price' => 13000,
             ],

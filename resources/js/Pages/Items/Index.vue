@@ -112,7 +112,7 @@ defineProps({
                             >{{ item.id }}</Link
                           >
                         </td>
-                        <td class="px-4 py-3">{{ item.name }}</td>
+                        <td class="px-4 py-3">{{ item.item_name }}</td>
                         <td class="px-4 py-3">{{ item.price }}</td>
                         <td class="px-4 py-3 text-lg text-gray-900">
                           <span v-if="item.is_selling === 1">販売中</span>

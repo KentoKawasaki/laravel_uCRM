@@ -36,12 +36,12 @@ const deleteItem = (id) => {
                     <div class="p-2 w-full">
                       <div class="relative">
                         <label
-                          for="name"
+                          for="item_name"
                           class="leading-7 text-sm text-gray-600"
                           >商品名</label
                         >
                         <div
-                          id="name"
+                          id="item_name"
                           class="
                             w-full
                             rounded
@@ -61,7 +61,7 @@ const deleteItem = (id) => {
                             ease-in-out
                           "
                         >
-                          {{ item.name }}
+                          {{ item.item_name }}
                         </div>
                       </div>
                     </div>

@@ -16,7 +16,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::select('id', 'name', 'price', 'is_selling')->get();
+        $items = Item::select('id', 'item_name', 'price', 'is_selling')->get();
         // dd($items);
         return Inertia::render('Items/Index', [
             'items' => $items,
@@ -42,7 +42,7 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request)
     {
         Item::create([
-            'name' => $request->name,
+            'item_name' => $request->item_name,
             'memo' => $request->memo,
             'price' => $request->price,
         ]);
@@ -88,8 +88,8 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        // dd($item->name, $request->name);
-        $item->name = $request->name;
+        // dd($item->item_name, $request->item_name);
+        $item->item_name = $request->item_name;
         $item->memo = $request->memo;
         $item->price = $request->price;
         $item->is_selling = $request->is_selling;

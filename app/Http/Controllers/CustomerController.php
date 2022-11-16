@@ -17,10 +17,23 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $customers = Customer::searchCustomers($request->search)->select('id', 'name', 'kana', 'tel')->paginate(50);
+        $searchQuery = Customer::searchCustomers($request->search);
+        // dd($searchQuery === false);
+        $noResults = [
+            'isShow' => $searchQuery === false,
+            'message' => '検索条件に該当する顧客は存在しません',
+        ];
+
+        // dd($noResults['isShow']);
+        $customers = null;
+        if(!$noResults['isShow']) {
+            $customers = $searchQuery->select('id', 'customer_name', 'kana', 'tel')->paginate(50);
+        }
+        // dd($searchQuery->exists(), $searchQuery);
 
         return Inertia::render('Customers/Index', [
             'customers' => $customers,
+            'noResults' => $noResults,
         ]);
     }
 
@@ -43,7 +56,7 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         Customer::create([
-            'name' => $request->name,
+            'customer_name' => $request->customer_name,
             'kana' => $request->kana,
             'tel' => $request->tel,
             'email' => $request->email,
@@ -114,7 +127,7 @@ class CustomerController extends Controller
 
         // dd($request->rules());
 
-        $customer->name = $request->name;
+        $customer->customer_name = $request->customer_name;
         $customer->kana = $request->kana;
         $customer->email = $request->email;
         $customer->postcode = $request->postcode;
@@ -139,6 +152,11 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return to_route('customers.index')->with([
+            'message' => '削除しました',
+            'status' => 'danger',
+        ]);
     }
 }

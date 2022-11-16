@@ -25,9 +25,9 @@ class UpdateCustomerRequest extends FormRequest
     {
 
         return [
-            'name' => ['required', 'max:50'],
+            'customer_name' => ['required', 'max:50'],
             'kana' => ['required', 'regex:/^[ァ-ヾ]+$/u', 'max:50'],
-            'tel' => ['required', 'max:20'],
+            'tel' => ['required', 'numeric', 'digits_between:10,20'],
             'email' => ['required', 'email'],
             'postcode' => ['required', 'max:7'],
             'address' => ['required', 'max:100'],

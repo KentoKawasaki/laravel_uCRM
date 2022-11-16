@@ -8,6 +8,7 @@ import { Inertia } from "@inertiajs/inertia";
 
 defineProps({
   customers: Object,
+  noResults: Array,
 });
 
 const search = ref("");
@@ -35,18 +36,29 @@ const searchCustomers = () => {
               <div class="container px-5 py-8 mx-auto">
                 <FlashMessage />
 
-                <div class="flex my-4 justify-between sm:flex-row flex-col items-center lg:w-2/3 w-full mx-auto">
-                  <div class="mr-auto flex sm:flex-row flex-col items-end">
-                    <input type="text" name="search" v-model="search" />
+                <div
+                  class="
+                    flex
+                    my-4
+                    justify-between
+                    sm:flex-row
+                    flex-col
+                    items-center
+                    lg:w-2/3
+                    w-full
+                    mx-auto
+                  "
+                >
+                  <div class="mb-5 sm:mb-0 flex sm:flex-row flex-col justify-center items-center">
+                    <input
+                      type="text"
+                      name="search"
+                      v-model="search"
+                      @keyup.enter="searchCustomers"
+                      placeholder="'カナ'または'電話番号'を入力"
+                    />
                     <buttton
-                      class="
-                        bg-blue-300
-                        text-white
-                        py-2
-                        px-2
-                        text-lg
-                        ml-2
-                      "
+                      class="bg-blue-300 text-white py-2 px-2 sm:text-lg sm:ml-2 sm:mt-0 mt-2 w-1/2 text-center block"
                       @click="searchCustomers"
                       >検索</buttton
                     >
@@ -56,7 +68,6 @@ const searchCustomers = () => {
                       as="button"
                       :href="route('customers.create')"
                       class="
-
                         text-white
                         bg-indigo-500
                         border-0
@@ -70,83 +81,103 @@ const searchCustomers = () => {
                     >
                   </div>
                 </div>
-                <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                  <table class="table-auto w-full text-left whitespace-no-wrap">
-                    <thead>
-                      <tr>
-                        <th
-                          class="
-                            px-4
-                            py-3
-                            title-font
-                            tracking-wider
-                            font-medium
-                            text-gray-900 text-sm
-                            bg-gray-100
-                            rounded-tl rounded-bl
-                          "
-                        >
-                          顧客ID
-                        </th>
-                        <th
-                          class="
-                            px-4
-                            py-3
-                            title-font
-                            tracking-wider
-                            font-medium
-                            text-gray-900 text-sm
-                            bg-gray-100
-                          "
-                        >
-                          氏名
-                        </th>
-                        <th
-                          class="
-                            px-4
-                            py-3
-                            title-font
-                            tracking-wider
-                            font-medium
-                            text-gray-900 text-sm
-                            bg-gray-100
-                          "
-                        >
-                          カナ
-                        </th>
-                        <th
-                          class="
-                            px-4
-                            py-3
-                            title-font
-                            tracking-wider
-                            font-medium
-                            text-gray-900 text-sm
-                            bg-gray-100
-                          "
-                        >
-                          電話番号
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="customer in customers.data" :key="customer.id">
-                        <td class="px-4 py-3">
-                          <a class="text-blue-400" :href="route('customers.show', {customer: customer.id})">{{ customer.id }}</a>
-                        </td>
-                        <td class="px-4 py-3">{{ customer.name }}</td>
-                        <td class="px-4 py-3">{{ customer.kana }}</td>
-                        <td class="px-4 py-3 text-lg text-gray-900">
-                          {{ customer.tel }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div v-if="noResults.isShow" class="text-center mt-10">
+                  {{ noResults.message }}
                 </div>
-                <PaginationComponent
-                  class="mt-6 w-full"
-                  :links="customers.links"
-                />
+                <div v-else>
+                  <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                    <table
+                      class="table-auto w-full text-left whitespace-no-wrap"
+                    >
+                      <thead>
+                        <tr>
+                          <th
+                            class="
+                              px-4
+                              py-3
+                              title-font
+                              tracking-wider
+                              font-medium
+                              text-gray-900 text-sm
+                              bg-gray-100
+                              rounded-tl rounded-bl
+                            "
+                          >
+                            顧客ID
+                          </th>
+                          <th
+                            class="
+                              px-4
+                              py-3
+                              title-font
+                              tracking-wider
+                              font-medium
+                              text-gray-900 text-sm
+                              bg-gray-100
+                            "
+                          >
+                            氏名
+                          </th>
+                          <th
+                            class="
+                              px-4
+                              py-3
+                              title-font
+                              tracking-wider
+                              font-medium
+                              text-gray-900 text-sm
+                              bg-gray-100
+                            "
+                          >
+                            カナ
+                          </th>
+                          <th
+                            class="
+                              px-4
+                              py-3
+                              title-font
+                              tracking-wider
+                              font-medium
+                              text-gray-900 text-sm
+                              bg-gray-100
+                            "
+                          >
+                            電話番号
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="customer in customers.data"
+                          :key="customer.id"
+                        >
+                          <td class="px-4 py-3">
+                            <a
+                              class="text-blue-400"
+                              :href="
+                                route('customers.show', {
+                                  customer: customer.id,
+                                })
+                              "
+                              >{{ customer.id }}</a
+                            >
+                          </td>
+                          <td class="px-4 py-3">
+                            {{ customer.customer_name }}
+                          </td>
+                          <td class="px-4 py-3">{{ customer.kana }}</td>
+                          <td class="px-4 py-3 text-lg text-gray-900">
+                            {{ customer.tel }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <PaginationComponent
+                    class="mt-6 w-full"
+                    :links="customers.links"
+                  />
+                </div>
               </div>
             </section>
           </div>

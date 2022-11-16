@@ -12,7 +12,7 @@ const props = defineProps({
 
 const form = reactive({
   id: props.item.id,
-  name: props.item.name,
+  item_name: props.item.item_name,
   memo: props.item.memo,
   price: props.item.price,
   is_selling: props.item.is_selling,
@@ -45,15 +45,15 @@ const updateItem = (id) => {
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label
-                            for="name"
+                            for="item_name"
                             class="leading-7 text-sm text-gray-600"
                             >商品名</label
                           >
                           <input
                             type="text"
-                            id="name"
-                            name="name"
-                            v-model="form.name"
+                            id="item_name"
+                            name="item_name"
+                            v-model="form.item_name"
                             class="
                               w-full
                               bg-gray-100 bg-opacity-50
@@ -76,8 +76,8 @@ const updateItem = (id) => {
                           />
                           <InputError
                             class="mt-2"
-                            v-if="errors.name"
-                            :message="errors.name"
+                            v-if="errors.item_name"
+                            :message="errors.item_name"
                           ></InputError>
                         </div>
                       </div>

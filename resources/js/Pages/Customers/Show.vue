@@ -40,12 +40,12 @@ const gender = ["男性", "女性", "その他"];
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label
-                            for="name"
+                            for="customer_name"
                             class="leading-7 text-sm text-gray-600"
                             >氏名</label
                           >
                           <div
-                            id="name"
+                            id="customer_name"
                             class="
                               w-full
                               rounded
@@ -65,7 +65,7 @@ const gender = ["男性", "女性", "その他"];
                               ease-in-out
                             "
                           >
-                            {{ customer.name }}
+                            {{ customer.customer_name }}
                           </div>
                         </div>
                       </div>

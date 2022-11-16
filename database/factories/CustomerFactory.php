@@ -16,14 +16,14 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
-        $tel = str_replace('-', '', $this->faker->phoneNumber);
+        $tel = str_replace('-', '', $this->faker->unique()->phoneNumber);
         $address = mb_substr($this->faker->address, 9);
 
         return [
-            'name' => $this->faker->name,
+            'customer_name' => $this->faker->name,
             'kana' => $this->faker->kanaName,
             'tel' => $tel,
-            'email' => $this->faker->email,
+            'email' => $this->faker->unique()->email,
             'postcode' => $this->faker->postcode,
             'address' => $address,
             'birthday' => $this->faker->dateTime,

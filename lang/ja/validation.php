@@ -156,9 +156,10 @@ return [
     'attributes' => [
         'title' => '件名',
         'content' => '本文',
-        'name' => '商品名',
+        'item_name' => '商品名',
         'memo' => '商品詳細',
         'price' => '商品価格',
+        'customer_name' => '氏名',
         'kana' => 'カナ',
         'tel' => '電話番号',
         'email' => 'メールアドレス',

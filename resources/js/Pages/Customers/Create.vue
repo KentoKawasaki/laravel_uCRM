@@ -11,7 +11,7 @@ defineProps({
 });
 
 const form = reactive({
-  name: null,
+  customer_name: null,
   kana: null,
   tel: null,
   email: null,
@@ -56,15 +56,15 @@ const storeCustomer = () => {
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label
-                            for="name"
+                            for="customer_name"
                             class="leading-7 text-sm text-gray-600"
                             >氏名</label
                           >
                           <input
                             type="text"
-                            id="name"
-                            name="name"
-                            v-model="form.name"
+                            id="customer_name"
+                            name="customer_name"
+                            v-model="form.customer_name"
                             class="
                               w-full
                               bg-gray-100 bg-opacity-50
@@ -87,8 +87,8 @@ const storeCustomer = () => {
                           />
                           <InputError
                             class="mt-2"
-                            v-if="errors.name"
-                            :message="errors.name"
+                            v-if="errors.customer_name"
+                            :message="errors.customer_name"
                           ></InputError>
                         </div>
                       </div>
@@ -453,7 +453,7 @@ const storeCustomer = () => {
                             text-lg
                           "
                         >
-                          商品登録
+                          顧客登録
                         </button>
                       </div>
                     </div>
