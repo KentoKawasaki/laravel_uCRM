@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use Inertia\Inertia;
+use App\Services\CheckEmptyQueryService;
 
 class CustomerController extends Controller
 {
@@ -15,24 +16,19 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    use CheckEmptyQueryService;
+
     public function index(Request $request)
     {
         $searchQuery = Customer::searchCustomers($request->search);
         // dd($searchQuery === false);
-        $noResults = [
-            'isShow' => $searchQuery === false,
-            'message' => '検索条件に該当する顧客は存在しません',
-        ];
+        $columns = ['id', 'customer_name', 'kana', 'tel'];
 
-        // dd($noResults['isShow']);
-        $customers = null;
-        if(!$noResults['isShow']) {
-            $customers = $searchQuery->select('id', 'customer_name', 'kana', 'tel')->paginate(50);
-        }
-        // dd($searchQuery->exists(), $searchQuery);
+        list($noResults, $customers) = $this->checkEmpty($searchQuery, $columns);
 
         return Inertia::render('Customers/Index', [
-            'customers' => $customers,
+            'customers' => $customers !== null ? $customers->paginate(50) : null,
             'noResults' => $noResults,
         ]);
     }
