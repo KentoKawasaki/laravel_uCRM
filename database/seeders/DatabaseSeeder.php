@@ -13,28 +13,31 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
+
+    // public function applyItems($instance, $items, $numberOfItems)
+    // {
+    //     $itemsArray = $items->random(rand(1, $numberOfItems))->pluck('id')->all();
+    //     foreach ($itemsArray as $id) {
+    //         $instance->items()->attach(
+    //             $id,
+    //             ['quantity' => rand(1, 100)]
+    //         );
+    //     }
+    // }
+
     public function run()
     {
-        $this->call([
-            UserSeeder::class,
-            ItemSeeder::class,
-        ]);
+
+
+        
 
         \App\Models\Customer::factory(1000)->create();
 
-        $items = \App\Models\Item::all();
-        $itemCount = $items->count();
-
-        Purchase::factory(100)->create()->each(function (Purchase $purchase) use ($items, $itemCount) {
-            $itemsArray = $items->random(rand(1, $itemCount))->pluck('id')->all();
-            forEach($itemsArray as $id) {
-                $purchase->items()->attach(
-                    $id,
-                    ['quantity' => rand(1, 100)]
-                );
-            }
-            
-        });
+        $this->call([
+            UserSeeder::class,
+            ItemSeeder::class,
+            PurchaseSeeder::class,
+        ]);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

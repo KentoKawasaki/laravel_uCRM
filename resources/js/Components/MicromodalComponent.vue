@@ -4,16 +4,16 @@ import axios from "axios";
 import { Link } from "@inertiajs/inertia-vue3";
 import { ref, reactive, onMounted } from "vue";
 
-// const props = defineProps({
-//   searchedCustomers: Object,
-//   noResults: Array,
-// });
+defineProps({
+  placeHolder: String,
+});
 
-onMounted(() => {
+// onMounted(() => {
   // axios.get("/api/user").then((res) => {
   //   console.log(res.data);
   // });
-});
+// });
+
 
 const isShow = ref(false);
 const toggleStatus = () => {
@@ -30,15 +30,16 @@ const searchForm = reactive({
 
 const getResData = (res) => {
   const resData = res.data;
-  console.log(resData);
+  // console.log(resData);
   const customersProps = resData.searchedCustomers;
-  console.log(customersProps);
+  // console.log(customersProps);
   return {
     noResults: resData.noResults,
     countOverMessage: resData.countOverMessage,
     customers: customersProps,
   };
 };
+
 const searchCustomers = async () => {
   try {
     await axios
@@ -49,17 +50,8 @@ const searchCustomers = async () => {
 
         // console.log(searchForm);
         for (const [key, value] of Object.entries(getResData(res))) {
-          // console.log(key, value)
           searchForm[key] = value;
-          // console.log(searchForm[key])
         }
-        // console.log(searchForm);
-
-        // searchedCustomers.noResults = res.data.noResults
-        // searchedCustomers.value = res.data.searchedCustomers.data;
-        // searchedCustomers.links = res.data.searchedCustomers.links;
-        // console.log(searchedCustomers.noResults.isShow, searchedCustomers.value[0])
-        // console.log(res.data.searchedCustomers.links)
       });
     toggleStatus();
   } catch (e) {
@@ -206,6 +198,7 @@ const setCustomer = (object) =>{
   <input
     name="customer_name"
     v-model="search"
+    :placeholder="(placeHolder === null) ? '' : placeHolder"
     @keyup.enter="searchCustomers"
     class="
       w-full

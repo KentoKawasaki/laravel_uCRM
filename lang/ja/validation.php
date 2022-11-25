@@ -154,19 +154,20 @@ return [
     */
 
     'attributes' => [
-        'title' => '件名',
-        'content' => '本文',
-        'item_name' => '商品名',
-        'memo' => '商品詳細',
-        'price' => '商品価格',
-        'customer_name' => '氏名',
-        'kana' => 'カナ',
-        'tel' => '電話番号',
-        'email' => 'メールアドレス',
-        'postcode' => '郵便番号',
         'address' => '住所',
         'birthday' => '誕生日',
-        'gender' => '性別'
+        'content' => '本文',
+        'customer_id' => '会員',
+        'customer_name' => '氏名',
+        'email' => 'メールアドレス',
+        'gender' => '性別',
+        'item_name' => '商品名',
+        'kana' => 'カナ',
+        'memo' => '商品詳細',
+        'postcode' => '郵便番号',
+        'price' => '商品価格',
+        'tel' => '電話番号',
+        'title' => '件名',
     ],
 
 ];
