@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\HTTP\controllers\Api\AnalysisController;
 use App\Models\Customer;
 use App\Services\CheckEmptyQueryService;
 
@@ -52,10 +53,11 @@ Route::middleware('auth:sanctum')->get('/searchCustomers', function (Request $re
         'searchedCustomers' => $searchedCustomers !== null ? $searchedCustomers->get() : null,
         'noResults' => $noResults,
         'countOverMessage' => $countOverMessage,
-        
     ];
     // return Inertia::render('@Components/MicromodalComponent.vue', [
     //     'searchedCustomers' => $searchedCustomers,
     //     'noResults' => $noResults,
     // ]);
 });
+
+Route::middleware('auth:sanctum')->get('/analysis', [ AnalysisController::class, 'index'])->name('api.analysis');

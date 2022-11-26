@@ -160,6 +160,7 @@ return [
         'customer_id' => '会員',
         'customer_name' => '氏名',
         'email' => 'メールアドレス',
+        'endDate' => "'To:'に入力する日付",
         'gender' => '性別',
         'item_name' => '商品名',
         'kana' => 'カナ',

@@ -168,7 +168,6 @@ const setCustomerId = (id) => {
                           </select> -->
                           <InputError
                             class="mt-2"
-                            v-if="errors.customer_id"
                             :message="errors.customer_id"
                           ></InputError>
                         </div>
