@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
+import ResultTable from "@/Components/ResultTable.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { reactive, onMounted } from "vue";
 import { getToday } from "@/common";
@@ -40,6 +41,7 @@ const getData = async () => {
         data.data = res.data.data;
         data.labels = res.data.labels;
         data.totals = res.data.totals;
+        data.type = res.data.type;
       });
   } catch (e) {
     if (e.response.data.message) {
@@ -66,6 +68,12 @@ const getData = async () => {
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
             <form @submit.prevent="getData" class="mb-5">
+              分析方法<br/>
+              <input type="radio" v-model="form.type" value="perDay" checked><span class="mr-2">日別</span>
+              <input type="radio" v-model="form.type" value="perMonth"><span class="mr-2">月別</span>
+              <input type="radio" v-model="form.type" value="perYear"><span class="mr-2">年別</span>
+              <input type="radio" v-model="form.type" value="decile"><span class="mr-2">デシル分析</span><br />
+
               From:
               <input type="date" name="startDate" v-model="form.startDate" />
               To:
@@ -89,54 +97,7 @@ const getData = async () => {
               </button>
             </form>
             <ChartVue :data="data" />
-            <div
-              v-show="data.data"
-              class="lg:w-2/3 w-full mt-5 mx-auto overflow-auto"
-            >
-              <table class="table-auto w-full text-left whitespace-no-wrap">
-                <thead>
-                  <tr>
-                    <th
-                      class="
-                        px-4
-                        py-3
-                        title-font
-                        tracking-wider
-                        font-medium
-                        text-gray-900 text-sm
-                        bg-gray-100
-                        rounded-tl rounded-bl
-                      "
-                    >
-                      年月日
-                    </th>
-                    <th
-                      class="
-                        px-4
-                        py-3
-                        title-font
-                        tracking-wider
-                        font-medium
-                        text-gray-900 text-sm
-                        bg-gray-100
-                      "
-                    >
-                      金額
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="datum in data.data"
-                    :key="datum.date"
-                    class="border-b-2 border-slate-200"
-                  >
-                    <td class="px-4 py-3">{{ datum.date }}</td>
-                    <td class="px-4 py-3">{{ datum.total }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <ResultTable :data="data" />
           </div>
         </div>
       </div>

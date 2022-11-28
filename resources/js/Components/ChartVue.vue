@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log(props.data.data)
+  // console.log(props.data.data)
 })
 const labels = computed(() => props.data.labels);
 const totals = computed(() => props.data.totals);

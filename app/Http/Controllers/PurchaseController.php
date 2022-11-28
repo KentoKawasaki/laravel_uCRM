@@ -8,8 +8,10 @@ use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Customer;
 use App\Models\Item;
 use App\Models\Order;
+use App\Services\CheckEmptyQueryService;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
 {
@@ -18,17 +20,48 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    use CheckEmptyQueryService;
+
+    public function index(Request $request)
     {
         // dd(Order::paginate(50));
 
-        $orders = Order::groupBy('id')
-            ->selectRaw('id, sum(subtotal) as total,
-                customer_name, status, created_at')
-            ->paginate(50);
+        
+
+        // $orders = Order::groupBy('id')
+        //     ->selectRaw('id, sum(subtotal) as total,
+        //         customer_name, status, created_at')
+        //     ->orderByDesc('created_at')
+        //     ->paginate(50);
+
+        // dd($searchQuery === false);
+        
+        $orderQuery = Order::searchOrders($request->search);
+
+        $columns = ['id', 'sum(subtotal) as total', 'customer_name', 'status', 'created_at'];
+
+
+        $noResults = [
+            'isShow' => $orderQuery === false,
+            'message' => '検索条件に該当する顧客は存在しません',
+        ];
+
+
+        $orders = null;
+        if(!$noResults['isShow']) {
+            $orders = $orderQuery->groupBy('id')
+                ->selectRaw('id, sum(subtotal) as total,
+                    customer_name, status, created_at')
+                ->orderByDesc('created_at')
+                ->paginate(50);;
+        }
+        // list($noResults, $orders) = $this->checkEmpty($orderQuery, $columns);
+        // dd($noResults, $orders);
 
         return Inertia::render('Purchases/Index', [
             'orders' => $orders,
+            'noResults' => $noResults,
         ]);
     }
 

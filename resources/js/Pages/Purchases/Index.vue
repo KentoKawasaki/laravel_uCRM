@@ -9,7 +9,14 @@ import dayjs from "dayjs";
 
 const props = defineProps({
   orders: Object,
+  noResults: Array,
 });
+
+const search = ref("");
+
+const searchOrders = () => {
+  Inertia.get(route("purchases.index", { search: search.value }));
+};
 
 onMounted(() => {
   console.log(props.orders.data);
@@ -62,8 +69,8 @@ onMounted(() => {
                       type="text"
                       name="search"
                       v-model="search"
-                      @keyup.enter="searchCustomers"
-                      placeholder="'カナ'または'電話番号'を入力"
+                      @keyup.enter="searchOrders"
+                      placeholder="氏名を漢字で入力してください"
                     />
                     <buttton
                       class="
@@ -77,13 +84,16 @@ onMounted(() => {
                         text-center
                         block
                       "
-                      @click="searchCustomers"
+                      @click="searchOrders"
                       >検索</buttton
                     >
                   </div>
                 </div>
                 <div>
-                  <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                  <div v-if="noResults.isShow" class="text-center mt-10">
+                  {{ noResults.message }}
+                </div>
+                  <div v-else class="lg:w-2/3 w-full mx-auto overflow-auto">
                     <table
                       class="table-auto w-full text-left whitespace-no-wrap"
                     >
