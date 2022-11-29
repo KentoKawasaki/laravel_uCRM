@@ -28,15 +28,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-
-        
-
         \App\Models\Customer::factory(1000)->create();
 
         $this->call([
             UserSeeder::class,
             ItemSeeder::class,
             PurchaseSeeder::class,
+            RankSeeder::class,
         ]);
 
         // \App\Models\User::factory()->create([
