@@ -248,7 +248,7 @@ const props = defineProps({
 
 
     <h4 class="text-center text-2xl my-4 font-semibold">RFM分析表</h4>
-    <table
+    <!-- <table
       class="
         mt-2
         mx-auto
@@ -357,6 +357,6 @@ const props = defineProps({
           <td class="p-3">{{ rf.f_1 }}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </template>

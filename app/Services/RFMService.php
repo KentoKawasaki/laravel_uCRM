@@ -73,7 +73,7 @@ class RFMService
 
         $totals = DB::table($subQuery)->count();
 
-        function getCountOfRFM($query, $rfm, $order = 'desc')
+        function getCountOfRFM($query, $rfm, $order = 'asc')
         {
             return DB::table($query)
                 ->rightJoin('ranks', 'ranks.rank', '=', $rfm)
@@ -111,19 +111,33 @@ class RFMService
 
         // concatで文字列結合
 
-        $selectRFQuery = 'concat("r_", rank) as rRank';
-        for ($i = 5; $i >= 1; $i--) {
-            $selectRFQuery .= ', count(case when f = ' . $i . ' then 1 end) as f_' . $i;
-        }
+        // RF分析表用データ
+        // $selectRFQuery = 'concat("r_", rank) as rRank';
+        // for ($i = 5; $i >= 1; $i--) {
+        //     $selectRFQuery .= ', count(case when f = ' . $i . ' then 1 end) as f_' . $i;
+        // }
 
+        // $data = DB::table($subQuery)
+        //     ->rightJoin('ranks', 'ranks.rank', '=', 'r')
+        //     ->groupBy('rank')
+        //     ->selectRaw($selectRFQuery)
+        //     ->orderBy('rRank', 'desc')
+        //     ->get();
+
+
+        // 散布図用データ
         $data = DB::table($subQuery)
-            ->rightJoin('ranks', 'ranks.rank', '=', 'r')
-            ->groupBy('rank')
-            ->selectRaw($selectRFQuery)
-            ->orderBy('rRank', 'desc')
+            ->rightJoin('ranks', 'ranks.rank', '=', 'm')
+            ->whereNotNull('m')
+            ->groupBy('rank', 'r', 'f')
+            ->selectRaw('concat("mRank", rank) as mRank , r, f, count(r) as r_n')
+            ->orderBy('mRank', 'asc')
+            ->orderBy('r', 'asc')
+            ->orderBy('f', 'asc')
             ->get();
 
+        $data = array_values($data->groupBy('mRank')->toArray());
 
-        return [$data, $totals, $eachCount];
+        return [$data, $eachCount, $totals];
     }
 }

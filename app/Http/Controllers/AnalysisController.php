@@ -49,8 +49,8 @@ class AnalysisController extends Controller
     public function decile()
     {
 
-        $startDate = '2022-08-01';
-        $endDate = '2022-08-31';
+        $startDate = '2022-11-21';
+        $endDate = '2022-11-30';
         // 1. 購買IDごとにまとめる
         $subQuery = Order::betweenDate($startDate, $endDate)
             ->groupBy('id')
@@ -133,7 +133,7 @@ class AnalysisController extends Controller
 
         $startDate = '2021-12-01';
         $endDate = '2022-11-30';
-        
+
         // 1. 購買ID毎にまとめる 
         $subQuery = Order::betweenDate(
             $startDate,
@@ -161,7 +161,7 @@ class AnalysisController extends Controller
         $rfmPrms = [
             14, 28, 60, 90, // parameters of recency 
             7, 5, 3, 2, // parameters of frequency
-            300000, 200000, 100000, 30000, // parameters of monetary
+            500000, 300000, 150000, 50000, // parameters of monetary
         ];
 
         // 4. 会員ごとのRFMランクを計算
@@ -197,7 +197,7 @@ class AnalysisController extends Controller
 
         $total = DB::table($subQuery)->count();
 
-        function getCountOfRFM($query, $rfm, $order = 'desc')
+        function getCountOfRFM($query, $rfm, $order = 'asc')
         {
             // dd(DB::table($query)->rightJoin('ranks', 'ranks.rank', '=', $rfm)->get());
 
@@ -239,13 +239,87 @@ class AnalysisController extends Controller
             $selectRFQuery .= ', count(case when f = ' . $i . ' then 1 end) as f_' . $i;
         }
 
+        // $data = DB::table($subQuery)
+        //     ->rightJoin('ranks', 'ranks.rank', '=', 'r')
+        //     ->groupBy('rank')
+        //     ->selectRaw($selectRFQuery)
+        //     ->orderBy('rRank', 'desc')
+        //     ->get();
+
         $data = DB::table($subQuery)
-            ->rightJoin('ranks', 'ranks.rank', '=', 'r')
-            ->groupBy('rank')
-            ->selectRaw($selectRFQuery)
-            ->orderBy('rRank', 'desc')
+            ->rightJoin('ranks', 'ranks.rank', '=', 'm')
+            ->whereNotNull('m')
+            ->groupBy('rank', 'r', 'f')
+            ->selectRaw('concat("mRank", rank) as mRank , r, f, count(r) as r_n')
+            ->orderBy('mRank', 'asc')
+            ->orderBy('r', 'asc')
+            ->orderBy('f', 'asc')
             ->get();
 
-        // dd($data);
+
+        // dd($data->where('mRank', $keys[0])->all());
+
+        // function getRFMArray($collection, $eachCount, $arr = null)
+        // {
+        //     if ($arr = null) {
+        //         $arr = [];
+        //     }
+
+        //     $mRanks = [];
+        //     foreach ($eachCount as $index => $item) {
+        //         if ($item['m'] === 0) {
+        //             continue;
+        //         }
+        //         $mRanks[] = $index + 1;
+        //     }
+
+        //     // dd($mRanks);
+
+        //     foreach ($mRanks as $mRank) {
+        //         // $arr['mRank' . $mRank] = $collection->(null, null)->toArray();
+        //     }
+
+        //     return $arr;
+        // }
+
+        $data = array_values($data->groupBy('mRank')->toArray());
+        dd($data);
+        // dd(getRFMArray($data, $eachCount));
+
+        // function labelsGenerator($numOfLabels, $suffix = '', $labels = null)
+        // {
+        //     if ($labels === null) {
+        //         $labels = [];
+        //     }
+        //     for ($i = 1; $i <= $numOfLabels; $i++) {
+        //         array_push($labels, $suffix . 'rank' . $i);
+        //     }
+
+        //     return $labels;
+        // }
+
+        // $rLabels = labelsGenerator(5, 'r_');
+        // $fLabels = labelsGenerator(5, 'f_');
+
+        // $scatterLabels = [
+        //     'rLabels' => $rLabels,
+        //     'fLabels' => $fLabels
+        // ];
+
+
+        // $r_count = 0;
+        // $f_count = 0;
+
+        // foreach($data as $datum) {
+        //     if($datum->r === 2) {
+        //         $r_count += $datum->r_n;
+        //     }
+        //     if ($datum->f === 2) {
+        //         $f_count += $datum->f_n;
+
+        //     }
+        // }
+
+        dd($data, $eachCount);
     }
 }

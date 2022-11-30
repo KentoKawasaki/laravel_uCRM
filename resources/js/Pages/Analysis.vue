@@ -37,16 +37,24 @@ const getData = async () => {
         },
       })
       .then((res) => {
-        // console.log(res.data);
+        console.log('then', res.data);
         data.data = res.data.data;
         data.totals = res.data.totals;
         data.type = res.data.type;
 
-        if (res.data.labels) {
+        if (res.data.type !== 'rfm') {
           data.labels = res.data.labels;
-        } else if (res.data.eachCount) {
+          data.eachCount = null;
+          data.rfmData = null;
+        }
+        
+        if (res.data.eachCount) {
           data.eachCount = res.data.eachCount;
-          console.log(res.data)
+          data.rfmData = res.data.data;
+          console.log('eachCount', res.data)
+          console.log('eachCount', data.rfmData)
+          // console.log(res.data.data.mRank1.map(item => item.r * 3))
+          // console.log(typeof res.data.data.mRank1)
         }
       });
   } catch (e) {

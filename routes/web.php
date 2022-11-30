@@ -47,6 +47,7 @@ use App\Http\Controllers\AnalysisController;
 
 // Analysis Route
 Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis');
+Route::get('analysis/rfm', [AnalysisController::class, 'rfm'])->name('analysis.rfm');
 
 // Item Route
 Route::resource('items', ItemController::class)->middleware(['auth', 'verified']);
