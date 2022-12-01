@@ -5,11 +5,13 @@ import ResultTable from "@/Components/ResultTable.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { reactive, onMounted } from "vue";
 import { getToday } from "@/common";
-import ChartVue from "@/Components/ChartVue.vue";
+import CustomBarChart from "@/Components/ChartVue/CustomBarChart.vue";
+import CustomBubbleChart from "@/Components/ChartVue/CustomBubbleChart.vue";
+
 
 onMounted(() => {
-  form.startDate = getToday();
-  form.endDate = getToday();
+  form.startDate = "2021-12-01";
+  form.endDate = "2022-11-30";
 });
 
 defineProps({
@@ -20,7 +22,7 @@ const form = reactive({
   startDate: null,
   endDate: null,
   type: "perDay",
-  rfmPrms: [14, 28, 60, 90, 7, 5, 3, 2, 300000, 200000, 100000, 30000],
+  rfmPrms: [14, 28, 60, 90, 7, 5, 3, 2, 500000, 300000, 100000, 50000],
 });
 
 const data = reactive({});
@@ -37,22 +39,25 @@ const getData = async () => {
         },
       })
       .then((res) => {
-        console.log('then', res.data);
+        console.log("then", res.data);
         data.data = res.data.data;
         data.totals = res.data.totals;
         data.type = res.data.type;
 
-        if (res.data.type !== 'rfm') {
+        if (res.data.type !== "rfm") {
           data.labels = res.data.labels;
+          data.graphType = 'bar'
           data.eachCount = null;
           data.rfmData = null;
         }
-        
-        if (res.data.eachCount) {
+
+        if (res.data.type === "rfm") {
           data.eachCount = res.data.eachCount;
           data.rfmData = res.data.data;
-          console.log('eachCount', res.data)
-          console.log('eachCount', data.rfmData)
+          data.graphType = 'bubble'
+          console.log("eachCount", res.data);
+          console.log("data.eachCount", data.eachCount);
+          console.log("data.rfmData", data.rfmData);
           // console.log(res.data.data.mRank1.map(item => item.r * 3))
           // console.log(typeof res.data.data.mRank1)
         }
@@ -117,20 +122,33 @@ const getData = async () => {
                     value="rfm"
                   /><label for="frm" class="mr-2">RFM分析</label>
                 </fieldset>
-                <div class="text-sm grid gap-3 grid-cols-1 grid-rows-2 sm:grid-cols-2 sm:grid-rows-1">
+                <div
+                  class="
+                    text-sm
+                    grid
+                    gap-3
+                    grid-cols-1 grid-rows-2
+                    sm:grid-cols-2 sm:grid-rows-1
+                  "
+                >
                   <div class="text-end sm:text-center">
-                  <label for="startDate" class="mr-2">From:</label>
-                  <input
-                    type="date"
-                    id="startDate"
-                    name="startDate"
-                    v-model="form.startDate"
-                  /></div>
-                 <div class="text-end sm:text-center">
-                  <label for="endDate" class="mr-2">To:</label>
-                  <input type="date" id="endDate" name="endDate" v-model="form.endDate" />
-                 </div>
-                  
+                    <label for="startDate" class="mr-2">From:</label>
+                    <input
+                      type="date"
+                      id="startDate"
+                      name="startDate"
+                      v-model="form.startDate"
+                    />
+                  </div>
+                  <div class="text-end sm:text-center">
+                    <label for="endDate" class="mr-2">To:</label>
+                    <input
+                      type="date"
+                      id="endDate"
+                      name="endDate"
+                      v-model="form.endDate"
+                    />
+                  </div>
                 </div>
               </div>
               <div v-if="form.type === 'rfm'" class="my-5">
@@ -205,9 +223,13 @@ const getData = async () => {
                 分析する
               </button>
             </form>
-            <div v-if="data.type !== 'rfm'">
-              <ChartVue :data="data" />
+
+            <CustomBarChart :data="data" />
+            <div >
+              <CustomBubbleChart v-if="data.graphType === 'bubble'" :data="data" />
             </div>
+            
+
             <ResultTable :data="data" />
           </div>
         </div>

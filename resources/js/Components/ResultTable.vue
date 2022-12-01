@@ -154,8 +154,11 @@ const props = defineProps({
     v-else-if="data.type === 'rfm'"
     class="lg:w-2/3 w-full mt-5 mx-auto overflow-auto"
   >
-  <h3 class="text-center text-3xl font-bold mb-5">RFM 分析結果</h3>
-  <div class="my-5 text-center text-xl"><span class="border-b-2 border-slate-500"><span class="font-medium">合計:</span> {{ data.totals }}人</span></div>
+  <!-- <h3 class="text-center text-3xl font-bold mb-5">RFM 分析結果</h3> -->
+  <h4 class="text-center text-2xl my-4 font-semibold">RFM分析で扱った人数</h4>
+  <div class="mb-10 text-center text-xl"><span class="border-b-2 border-slate-500">
+    <span class="font-medium">合計:</span> {{ data.totals }}人</span>
+  </div>
     
     <h4 class="text-center text-2xl my-4 font-semibold">RFMランクごとの人数</h4>
     <table
@@ -247,7 +250,7 @@ const props = defineProps({
     </table>
 
 
-    <h4 class="text-center text-2xl my-4 font-semibold">RFM分析表</h4>
+    <!-- <h4 class="text-center text-2xl my-4 font-semibold">RFM分析表</h4> -->
     <!-- <table
       class="
         mt-2
