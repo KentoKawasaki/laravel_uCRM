@@ -10,12 +10,12 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log(props.data.data);
+  // console.log(props.data.data);
   // console.log("Mounted Chart", rfmData);
   // console.log("Mounted Chart totals", totals);
 });
 
-const eachCount = computed(() => props.data.eachCount);
+
 const labels = computed(() => props.data.labels);
 const totals = computed(() => props.data.totals);
 
@@ -35,6 +35,6 @@ const barData = reactive({
 
 <template>
   <div v-if="props.data.graphType === 'bar'">
-    <BarChart :chartData="barData" />
+    <BarChart :chartData="barData" height=650 />
   </div>
 </template>

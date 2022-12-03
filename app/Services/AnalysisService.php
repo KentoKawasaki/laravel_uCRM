@@ -21,6 +21,7 @@ class AnalysisService
 
         $labels = $data->pluck('date');
         $totals = $data->pluck('total');
+        // dd($totals);
 
         return [$data, $labels, $totals];
     }

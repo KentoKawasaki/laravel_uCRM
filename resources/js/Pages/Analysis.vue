@@ -3,11 +3,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import ResultTable from "@/Components/ResultTable.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { reactive, onMounted } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { getToday } from "@/common";
 import CustomBarChart from "@/Components/ChartVue/CustomBarChart.vue";
-import CustomBubbleChart from "@/Components/ChartVue/CustomBubbleChart.vue";
-
+import BubbleChart from "@/Components/ChartVue/BubbleChart.vue";
 
 onMounted(() => {
   form.startDate = "2021-12-01";
@@ -21,11 +20,26 @@ defineProps({
 const form = reactive({
   startDate: null,
   endDate: null,
+  isMRanks: {
+    mRank1: true,
+    mRank2: true,
+    mRank3: true,
+    mRank4: true,
+    mRank5: true,
+  },
   type: "perDay",
-  rfmPrms: [14, 28, 60, 90, 7, 5, 3, 2, 500000, 300000, 100000, 50000],
+  rfmPrms: [14, 30, 90, 180, 7, 5, 3, 2, 10000000, 5000000, 1000000, 200000],
 });
 
 const data = reactive({});
+
+// const isMRankLabels = reactive({
+//   mRank1: true,
+//   mRank2: true,
+//   mRank3: true,
+//   mRank4: true,
+//   mRank5: true,
+// });
 
 const getData = async () => {
   try {
@@ -34,40 +48,41 @@ const getData = async () => {
         params: {
           startDate: form.startDate,
           endDate: form.endDate,
+          isMRanks: form.isMRanks,
           type: form.type,
           rfmPrms: form.rfmPrms,
         },
       })
       .then((res) => {
         console.log("then", res.data);
-        data.data = res.data.data;
+
         data.totals = res.data.totals;
         data.type = res.data.type;
 
         if (res.data.type !== "rfm") {
+          data.data = res.data.data;
           data.labels = res.data.labels;
-          data.graphType = 'bar'
+          data.graphType = "bar";
           data.eachCount = null;
           data.rfmData = null;
+          data.startDate = null;
+          data.endDate = null;
         }
 
         if (res.data.type === "rfm") {
           data.eachCount = res.data.eachCount;
-          data.rfmData = res.data.data;
-          data.graphType = 'bubble'
-          console.log("eachCount", res.data);
-          console.log("data.eachCount", data.eachCount);
-          console.log("data.rfmData", data.rfmData);
-          // console.log(res.data.data.mRank1.map(item => item.r * 3))
-          // console.log(typeof res.data.data.mRank1)
+          data.graphType = "bubble";
+          data.mRanks = res.data.mRanks;
+          data.rfmData = res.data.rfmData;
+          data.startDate = form.startDate;
+          data.endDate = form.endDate;
         }
       });
   } catch (e) {
+    console.log(e.message);
     if (e.response.data.errors) {
       alert(e.response.data.message);
     }
-
-    console.log(e.message);
   }
 };
 </script>
@@ -206,8 +221,7 @@ const getData = async () => {
               <button
                 class="
                   flex
-                  mt-10
-                  mb-20
+                  my-10
                   mx-auto
                   text-white
                   bg-indigo-500
@@ -225,10 +239,23 @@ const getData = async () => {
             </form>
 
             <CustomBarChart :data="data" />
-            <div >
-              <CustomBubbleChart v-if="data.graphType === 'bubble'" :data="data" />
+            <div v-if="data.graphType === 'bubble'">
+              <h3 class="text-center text-3xl font-bold mb-5">RFM 分析結果</h3>
+              <div class="grid sm:grid-cols-3 gap-3 grid-cols-1 mb-10 text-center">
+                <div v-for="mRank in data.mRanks" :key="mRank" class="sm:mx-0 mx-auto">
+                  <input
+                    type="checkbox"
+                    :id="mRank"
+                    v-model="form.isMRanks[mRank]"
+                    class="mr-3"
+                  />
+                  <label :for="mRank">{{ mRank }}</label>
+                </div>
+              </div>
+              <div>
+                <BubbleChart :data="data" />
+              </div>
             </div>
-            
 
             <ResultTable :data="data" />
           </div>

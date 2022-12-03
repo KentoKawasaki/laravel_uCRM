@@ -50,11 +50,23 @@ class AnalysisController extends Controller
         }
 
         if ($request->type === 'rfm') {
-            list($data, $eachCount, $totals) = RFMService::rfm($subQuery, $request->rfmPrms);
+            list($eachCount, $mRanks, $rfmData, $totals) = RFMService::rfm($subQuery, $request->rfmPrms);
+            $isMRanks = $request->isMRanks;
+            $selectedRfmData = [];
+
+            foreach($mRanks as $index => $mRank) {
+                // dd($index, $mRank, $isMRanks[$mRank], ($isMRanks[$mRank] === 'true'));
+                if ($isMRanks[$mRank] === 'true') {
+                    $selectedRfmData[] = $rfmData[$index];
+                }
+            }
+
+            // dd($mRanks, $rfmData, $selectedRfmData);
 
             return response()->json([
-                'data' => $data,
                 'eachCount' => $eachCount,
+                'mRanks' => $mRanks,
+                'rfmData' => $selectedRfmData,
                 'type' => $request->type,
                 'totals' => $totals,
 

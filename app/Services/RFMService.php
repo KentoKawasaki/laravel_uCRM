@@ -91,17 +91,15 @@ class RFMService
         $mCount = getCountOfRFM($subQuery, 'm');
 
         $eachCount = []; // Vue側に渡す配列を定義(初期値は空の配列)
-        $rank = 5; // rankの初期値は5
+        // $rank = 1; // rankの初期値は5
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 4; $i >= 0; $i--) {
             array_push($eachCount, [
-                'rank' => $rank,
+                'rank' => $i + 1,
                 'r' => $rCount[$i],
                 'f' => $fCount[$i],
                 'm' => $mCount[$i],
             ]);
-
-            $rank--;
         }
 
         // dd($subQuery);
@@ -136,8 +134,11 @@ class RFMService
             ->orderBy('f', 'asc')
             ->get();
 
-        $data = array_values($data->groupBy('mRank')->toArray());
+        // dd($data, $eachCount);
+        $dataArray = $data->groupBy('mRank')->toArray();
+        $rfmData = array_values($dataArray);
+        $mRanks = array_keys($dataArray);
 
-        return [$data, $eachCount, $totals];
+        return [$eachCount, $mRanks, $rfmData, $totals];
     }
 }
