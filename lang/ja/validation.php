@@ -153,6 +153,22 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'address' => '住所',
+        'birthday' => '誕生日',
+        'content' => '本文',
+        'customer_id' => '会員',
+        'customer_name' => '氏名',
+        'email' => 'メールアドレス',
+        'endDate' => "'To:'に入力する日付",
+        'gender' => '性別',
+        'item_name' => '商品名',
+        'kana' => 'カナ',
+        'memo' => '商品詳細',
+        'postcode' => '郵便番号',
+        'price' => '商品価格',
+        'tel' => '電話番号',
+        'title' => '件名',
+    ],
 
 ];
