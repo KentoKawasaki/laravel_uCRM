@@ -30,7 +30,7 @@ const searchCustomers = () => {
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
             <section class="text-gray-600 body-font">
               <div class="container px-5 py-8 mx-auto">
@@ -49,21 +49,22 @@ const searchCustomers = () => {
                     mx-auto
                   "
                 >
-                  <div class="mb-5 sm:mb-0 flex sm:flex-row flex-col justify-center items-center">
+                  <div class="mb-5 sm:mb-0 sm:w-2/3 flex sm:flex-row flex-col sm:justify-start items-center">
                     <input
                       type="text"
                       name="search"
                       v-model="search"
                       @keyup.enter="searchCustomers"
-                      placeholder="'カナ'または'電話番号'を入力"
+                      placeholder="'氏名(漢字)'または'電話番号'を入力"
+                      class="sm:w-2/3 w-full"
                     />
                     <buttton
-                      class="bg-blue-300 text-white py-2 px-2 sm:text-lg sm:ml-2 sm:mt-0 mt-2 w-1/2 text-center block"
+                      class="bg-blue-300 text-white sm:py-2 p-1 sm:text-lg sm:ml-2 sm:mt-0 mt-2 sm:w-1/5 w-2/3 text-center block"
                       @click="searchCustomers"
                       >検索</buttton
                     >
                   </div>
-                  <div>
+                  <div class="sm:w-1/3 flex sm:flex-row justify-end">
                     <Link
                       as="button"
                       :href="route('customers.create')"
@@ -176,6 +177,7 @@ const searchCustomers = () => {
                   <PaginationComponent
                     class="mt-6 w-full"
                     :links="customers.links"
+                    v-if="customers.links"
                   />
                 </div>
               </div>

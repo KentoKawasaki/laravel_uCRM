@@ -62,12 +62,12 @@ class Order extends Model
             // where('kana', 'like', "%{$word}%")->orWhere('tel', 'like', "%{$word}%")
 
             foreach( $input_splited as $word) {
-                if(is_numeric($word)) {
-                    $query->where('tel', 'like', "%{$word}%");
-                } else {
-                    $query->where('customer_name', 'like', "%{$word}%");
-                }
-                
+                // if(is_numeric($word)) {
+                //     $query->where('tel', 'like', "%{$word}%");
+                // } else {
+                //     $query->where('customer_name', 'like', "%{$word}%");
+                // }
+                $query->where('customer_name', 'like', "%{$word}%");
             }
 
             if($query->exists()) {

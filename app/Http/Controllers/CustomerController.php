@@ -21,14 +21,24 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $searchQuery = Customer::searchCustomers($request->search);
-        // dd($searchQuery === false);
+        $searchCustomerQuery = Customer::searchCustomers($request->search);
+        // dd($searchCustomerQuery === false);
         $columns = ['id', 'customer_name', 'kana', 'tel'];
 
-        list($noResults, $customers) = $this->checkEmpty($searchQuery, $columns);
+        list($noResults, $customers) = $this->checkEmpty($searchCustomerQuery, $columns);
+
+        if($customers !== null){
+            if($request->search == null){
+                $customers = $customers->paginate(50);
+            } else {
+                $customers = [
+                    'data' => $customers->get(),
+                ];
+            }
+        }
 
         return Inertia::render('Customers/Index', [
-            'customers' => $customers !== null ? $customers->paginate(50) : null,
+            'customers' => $customers,
             'noResults' => $noResults,
         ]);
     }

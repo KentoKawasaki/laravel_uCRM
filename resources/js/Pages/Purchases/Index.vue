@@ -35,7 +35,7 @@ onMounted(() => {
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
             <section class="text-gray-600 body-font">
               <div class="container px-5 py-8 mx-auto">
@@ -61,8 +61,10 @@ onMounted(() => {
                       flex
                       sm:flex-row
                       flex-col
-                      justify-center
+                      sm:justify-start
                       items-center
+                      sm:w-2/3
+                      w-full
                     "
                   >
                     <input
@@ -71,16 +73,17 @@ onMounted(() => {
                       v-model="search"
                       @keyup.enter="searchOrders"
                       placeholder="氏名を漢字で入力してください"
+                      class="sm:w-2/3"
                     />
                     <buttton
                       class="
                         bg-blue-300
                         text-white
-                        py-2
-                        px-2
+                        sm:py-2
+                        p-1
                         sm:text-lg sm:ml-2 sm:mt-0
                         mt-2
-                        w-1/2
+                        sm:w-1/5
                         text-center
                         block
                       "
@@ -91,8 +94,8 @@ onMounted(() => {
                 </div>
                 <div>
                   <div v-if="noResults.isShow" class="text-center mt-10">
-                  {{ noResults.message }}
-                </div>
+                    {{ noResults.message }}
+                  </div>
                   <div v-else class="lg:w-2/3 w-full mx-auto overflow-auto">
                     <table
                       class="table-auto w-full text-left whitespace-no-wrap"
@@ -184,8 +187,8 @@ onMounted(() => {
                             {{ order.customer_name }}
                           </td>
                           <td class="px-4 py-3">{{ order.total }}</td>
-                          <td class="px-4 py-3 text-lg text-gray-900">
-                            {{ order.status }}
+                          <td class="px-4 py-3 text-lg text-gray-900" :class="{ 'text-red-600' : (order.status === 0)}">
+                            {{ (order.status === 1) ? '未キャンセル' : 'キャンセル済み' }}
                           </td>
                           <td class="px-4 py-3 text-lg text-gray-900">
                             {{
@@ -201,6 +204,7 @@ onMounted(() => {
                   <PaginationComponent
                     class="mt-6 w-full"
                     :links="props.orders.links"
+                    v-if="props.orders.links"
                   />
                 </div>
               </div>

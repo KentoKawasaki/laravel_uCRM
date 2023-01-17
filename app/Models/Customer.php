@@ -27,7 +27,7 @@ class Customer extends Model
                 if(is_numeric($word)) {
                     $query->where('tel', 'like', "%{$word}%");
                 } else {
-                    $query->where('kana', 'like', "%{$word}%");
+                    $query->where('customer_name', 'like', "%{$word}%");
                 }
                 
             }

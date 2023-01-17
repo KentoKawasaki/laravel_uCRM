@@ -65,7 +65,7 @@ const emit = defineEmits([
 ])
 
 const setCustomer = (object) =>{
-  search.value= object.kana
+  search.value= object.customer_name
   emit('update:customerId', object.id)
   toggleStatus()
 }
@@ -165,7 +165,7 @@ const setCustomer = (object) =>{
                   <td class="px-4 py-3">
                     <button
                       type="button"
-                      @click="setCustomer({ id: customer.id, kana: customer.kana})"
+                      @click="setCustomer({ id: customer.id, customer_name: customer.customer_name})"
                       class="text-blue-400"
                       >{{ customer.id }}</button>
                   </td>

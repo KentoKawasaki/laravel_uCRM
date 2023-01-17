@@ -53,8 +53,15 @@ class PurchaseController extends Controller
             $orders = $orderQuery->groupBy('id')
                 ->selectRaw('id, sum(subtotal) as total,
                     customer_name, status, created_at')
-                ->orderByDesc('created_at')
-                ->paginate(50);;
+                ->orderByDesc('created_at');
+            
+            if ($request->search == null){
+                $orders = $orders->paginate(50);
+            } else {
+                $orders = [
+                    'data' => $orders->get()
+                ];
+            }
         }
         // list($noResults, $orders) = $this->checkEmpty($orderQuery, $columns);
         // dd($noResults, $orders);

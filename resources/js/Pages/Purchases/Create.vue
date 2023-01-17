@@ -13,7 +13,7 @@ const props = defineProps({
   items: Array,
 });
 
-const placeHolderMessage = "'カタカナ'で氏名を入力してください"
+const placeHolderMessage = "氏名(漢字)を入力してください"
 
 onMounted(() => {
   form.date = getToday();
